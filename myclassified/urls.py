@@ -17,7 +17,10 @@ Including another URLconf
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
+from core import urls
+
+
 urlpatterns = [
+    url(r'', include('core.urls'), name='core'),
     url(r'^admin/', admin.site.urls),
-    url(r'', include('core.urls')),
 ]

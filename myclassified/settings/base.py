@@ -24,6 +24,7 @@ SECRET_KEY = '-hf!1xd94-$t-wj8lqoh04@t@)c^5$ol9md*3*brb&9794(==f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+THUMBNAIL_DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
@@ -39,15 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
+    'bootstrap3',
     'compressor',
     'debug_toolbar',
-
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
-
     'social.apps.django_app.default',
     'sorl.thumbnail',
 
@@ -59,14 +60,15 @@ INSTALLED_APPS = [
 CORE = {
     'SITE_NAME': u'myClassified',
     'SITE_DESCRIPTION': u'One stop classified advertisements',
-    'ITEM_PER_USER_LIMIT': 20,
+    'POST_PER_USER_LIMIT': 20,
     'SITEMAP_LIMIT': 1000,
     'RSS_LIMIT': 100,
     'RELATED_LIMIT': 6,
-    'ITEM_PER_PAGE': 10,
+    'POST_PER_PAGE': 10,
     'LOGIN_TO_CONTACT': True,
 }
 
+SITE_ID = 1
 
 # SEO
 GOOGLE_ANALYTICS_PROPERTY_ID = ''
@@ -87,21 +89,27 @@ SOCIAL_AUTH_LOGIN_ERROR_URL = '/'
 SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
 SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
 
-SOCIAL_AUTH_FACEBOOK_KEY = '1088062091214377'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'ebf933b3e15964af2d1e27392ff340cd'
+SOCIAL_AUTH_FACEBOOK_KEY = '1107177645969488'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'fc892789b500510163c0474964fc5058'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = 'login'
 
 
 # Compression
 COMPRESS_ENABLED = True
 COMPRESS_CSS_FILTERS = [
     'compressor.filters.css_default.CssAbsoluteFilter',
-    'compressor.filters.cssmin.CSSMinFilter']
+    'compressor.filters.cssmin.CSSMinFilter',
+]
 
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -147,6 +155,15 @@ DATABASES = {
 }
 
 
+# Cache
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
+
+
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
@@ -171,7 +188,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-gb'
 
-TIME_ZONE = 'Europe/London'
+TIME_ZONE = 'Asia/Kuala_Lumpur'
 
 USE_I18N = True
 

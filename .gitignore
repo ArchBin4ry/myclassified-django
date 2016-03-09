@@ -2,3 +2,4 @@
 /static
 *.pyc
 /myclassified/settings/local.py
+/media

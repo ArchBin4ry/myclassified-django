@@ -11,26 +11,26 @@ class ImageInline(admin.StackedInline):
 
 
 class PostAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('title')}
-    list_display = ('title', 'slug', 'user', 'is_active', 'posted', 'updated', 'group')
+    prepopulated_fields = {'slug': ('title', )}
+    list_display = ('title', 'slug', 'user', 'is_active', 'posted', 'updated', 'group', )
     list_filter = ('group', 'is_active', 'posted')
     search_fields = ('title', 'body', 'posted')
     inlines = [ImageInline]
 
 
 class GroupAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('title')}
-    list_display = {'title', 'slug', 'section', 'count'}
-    list_filter = ('section')
+    prepopulated_fields = {'slug': ('title', )}
+    list_display = ('title', 'slug', 'section', 'count', )
+    list_filter = ('section', )
     search_fields = ('title', 'section_title')
 
 
 class SectionAdmin(admin.ModelAdmin):
-    list_display = ('title')
+    list_display = ('title', )
 
 
 class MyUserAdmin(UserAdmin):
-    list_display = ('username', 'email', 'last_login', 'date_joined', 'is_active', 'receive_news', 'count')
+    list_display = ('username', 'email', 'last_login', 'date_joined', 'is_active', 'subscription', 'count', )
     list_filter = ('last_login', 'date_joined', 'is_active')
     search_fields = ('username', 'email')
 

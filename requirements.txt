@@ -5,3 +5,9 @@ django-libsass>=0.6
 django-debug-toolbar>=1.4
 gunicorn>=19.1.1
 Fabric>=1.10.0
+django-bootstrap3>=7.0.0
+django-money>=0.7.6
+django-uuslug>=1.1.7
+python-social-auth==0.2.14
+sorl-thumbnail>=12.3
+South>=1.0.2

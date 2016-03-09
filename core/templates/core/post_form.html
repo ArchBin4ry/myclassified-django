@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}{% if form.instance.pk %}{% trans "Edit" %}{% else %}{% trans "Add" %}{% endif %} {% trans "post" %}{% endblock title %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <form enctype="multipart/form-data" method='post' role="form">
+
+                {{ formset.management_form }}
+
+                {% csrf_token %}
+
+                {% bootstrap_form form %}
+
+                {% for form in formset %}
+                    {% bootstrap_form form %}
+                {% endfor %}
+                <input type='submit' class="btn" value='{% trans "Save" %}'>
+
+            </form>
+        </div>
+    </div>
+{% endblock body %}

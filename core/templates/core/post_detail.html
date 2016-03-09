@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+{% load thumbnail %}
+{% load i18n %}
+
+{% block title %}{{ object.get_title }}{% endblock title %}
+{% block meta_description %}{{ object.get_description }}{% endblock meta_description %}
+{% block meta_keywords %}{{ object.get_keywords }}{% endblock meta_keywords %}
+
+{% block meta_og %}
+
+    <meta property="og:url" content="{{ site }}{{ object.get_absolute_url }}" />
+    <meta property="og:title" content="{{object.get_title}}" />
+    <meta property="og:description" content="{{ object.get_description }}" />
+    {% for img in object.image_set.all %}
+        {% thumbnail img.file "640x480" padding=True as im %}
+            <meta property="og:image" content="{{ site }}{{ im.url }}" />
+        {% endthumbnail %}
+    {% endfor %}
+
+{% endblock %}
+
+{% block body %}
+
+    {% include "core/admin_toolbar.html" %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <a href='{{ object.group.get_absolute_url }}'>{{ object.group }}</a>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-9">
+            <h1>{{ object.title }}</h1>
+        </div>
+        <div class="col-lg-3">
+            <h2>{{ object.price|default:"" }}</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            {{ object.description|linebreaksbr }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+
+            {% for img in object.image_set.all %}
+
+                {% thumbnail img.file "150x150" crop="center" as im %}
+                    <a href='{{img.file.url}}' data-lightbox="lightbox[{{object.id}}]" title="{{object.title}}">
+                        <img src='{{ im.url}}' alt='{{object.title}}' title='{{object.title}}' width="{{ im.width }}" height="{{ im.height }}" class="img-rounded" />
+                    </a>
+                {% endthumbnail %}
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+    {# CONTACT INFORMATION #}
+    <div class="row">
+        <div class="col-md-12">
+            <hr />
+            {% if settings.LOGIN_TO_CONTACT and not user.is_authenticated %}
+                {% trans "Please" %} <a href='{% url 'login' %}'>{% trans "login" %}</a> {%  trans "to see contact information." %}
+            {% else %}
+                {% trans "Phone" %}: {{ object.phone }}
+            {% endif %}
+        </div>
+    </div>
+
+
+    {# RELATED ITEMS #}
+    <div class="row">
+
+        <div class="col-lg-12">
+            <hr />
+        </div>
+
+        {% for post in object.get_related %}
+            <div class="col-md-2">
+                {% if post.image_set.all %}
+                    {% with post.image_set.all.0 as img %}
+
+                        {% thumbnail img.file "70x70" crop="center" as im %}
+                            <a href='{{post.get_absolute_url}}' title="{{post.get_title}}">
+                                <img src='{{im.url}}' alt='{{post.title}}' title='{{post.title}}' width="{{ im.width }}" height="{{ im.height }}" class="img-rounded" />
+                            </a>
+                        {% endthumbnail %}
+
+                    {% endwith %}
+                {% endif %}
+                <br/>
+                <a href='{{post.get_absolute_url}}' title="{{post.get_title}}">{{post.title|truncatewords:3}}</a>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
